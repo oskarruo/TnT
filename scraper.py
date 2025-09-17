@@ -1,5 +1,6 @@
-import requests, json, bs4, sys, math
+import requests, json, bs4, sys, math, os
 from concurrent.futures import ThreadPoolExecutor
+import yt_dlp
 
 BASE_URL = "https://zenith-prod-alt.ted.com/api/search"
 
@@ -24,7 +25,7 @@ def fetch_page(page, sorting):
     hits = res["results"][0]["hits"]
     return page, [hit["slug"] for hit in hits], res["results"][0]["nbPages"]
 
-def get_slugs(n_speeches=100, sorting="popular"):
+def get_slugs(n_speeches=1000, sorting="popular"):
     first_page = fetch_page(0, sorting)
     slugs = first_page[1]
     last_page_index = int(first_page[2])
@@ -110,8 +111,42 @@ def get_speech_data():
 
     print("Fetched speech data")
 
+def download_audio(url, slug):
+    yt_opts = {
+    "format": "worstaudio",
+    "outtmpl": os.path.join("data", "raw_audios", slug + ".%(ext)s"),
+    "postprocessors": [{
+        "key": "FFmpegExtractAudio",
+        "preferredcodec": "aac",
+        "preferredquality": "128",
+        }],
+    }
+
+    with yt_dlp.YoutubeDL(yt_opts) as ydl:
+        ydl.download(url)
+
+def get_audios():
+    with open("data/speeches.json", "r") as f:
+        speech_data = json.load(f)
+    
+    os.makedirs("data/raw_audios", exist_ok=True)
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = [
+            executor.submit(download_audio, speech["streamUrl"], speech["slug"])
+            for speech in speech_data if "streamUrl" in speech and speech["streamUrl"]
+        ]
+        for future in futures:
+            future.result()
+
+# Usage: python scraper.py [amount of speeches to download] [get "popular" or "newest" speeches]
 if __name__=="__main__":
-    n_speeches = sys.argv[1] # number of speeches
-    sorting = sys.argv[2] # "popular" for popular and "newest" for newest
+    n_speeches = 10
+    sorting = "popular"
+    if len(sys.argv) > 1:
+        n_speeches = sys.argv[1] # number of speeches
+    if len(sys.argv) > 2:
+        sorting = sys.argv[2] # "popular" for popular and "newest" for newest
     get_slugs(int(n_speeches), sorting)
     get_speech_data()
+    get_audios()
