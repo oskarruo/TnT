@@ -1,9 +1,10 @@
-import requests, json, bs4, sys, math, os
+import requests, json, bs4, sys, math, os, subprocess
 from concurrent.futures import ThreadPoolExecutor
 import yt_dlp
 
 BASE_URL = "https://zenith-prod-alt.ted.com/api/search"
 
+# this function is responsible for fetching the slugs (presenter + title) of a single search page
 def fetch_page(page, sorting):
     payload = [
         {
@@ -25,7 +26,8 @@ def fetch_page(page, sorting):
     hits = res["results"][0]["hits"]
     return page, [hit["slug"] for hit in hits], res["results"][0]["nbPages"]
 
-def get_slugs(n_speeches=1000, sorting="popular"):
+# gets the slugs of the n first speeches sorted by the given criteria, and saves them to a json
+def get_slugs(n_speeches, sorting):
     first_page = fetch_page(0, sorting)
     slugs = first_page[1]
     last_page_index = int(first_page[2])
@@ -48,6 +50,7 @@ def get_slugs(n_speeches=1000, sorting="popular"):
     
     print("Fetched slugs")
 
+# fetches the speech data (like the audio stream url, title, views, etc.) of a single given speech
 def fetch_speech_data(slug, build_id, session):
     url = f"https://www.ted.com/_next/data/{build_id}/talks/{slug}.json"
     res = session.get(url).json()
@@ -86,6 +89,7 @@ def fetch_speech_data(slug, build_id, session):
 
     return data
 
+# gets the speech data of all of the associated slugs in the previously saved slugs.json
 def get_speech_data():
     url = "https://www.ted.com"
     with requests.Session() as session:
@@ -111,20 +115,32 @@ def get_speech_data():
 
     print("Fetched speech data")
 
+# downloads and converts a single speech
 def download_audio(url, slug):
+    out_path = os.path.join("data", "raw_audios", slug + ".mp4")
+    wav_path = os.path.join("data", "raw_audios", slug + ".wav")
+
     yt_opts = {
-    "format": "worstaudio",
-    "outtmpl": os.path.join("data", "raw_audios", slug + ".%(ext)s"),
-    "postprocessors": [{
-        "key": "FFmpegExtractAudio",
-        "preferredcodec": "aac",
-        "preferredquality": "128",
-        }],
+        "format": "bestaudio",
+        "outtmpl": out_path,
+        "overwrites": True,
+        "nopart": True,
     }
 
     with yt_dlp.YoutubeDL(yt_opts) as ydl:
         ydl.download(url)
 
+    subprocess.run([
+        "ffmpeg", "-y",
+        "-i", out_path,
+        "-ar", "48000",
+        "-acodec", "pcm_s32le",
+        wav_path
+    ], check=True)
+
+    os.remove(out_path)
+
+# gets the audios of all of the associated speeches in the previously saved speeches.json
 def get_audios():
     with open("data/speeches.json", "r") as f:
         speech_data = json.load(f)
@@ -139,7 +155,7 @@ def get_audios():
         for future in futures:
             future.result()
 
-# Usage: python scraper.py [amount of speeches to download] [get "popular" or "newest" speeches]
+# Usage: python scraper.py [n: int (amount of speeches to download)] [sorting :string (sort by "popular" or "newest" speeches)]
 if __name__=="__main__":
     n_speeches = 10
     sorting = "popular"
