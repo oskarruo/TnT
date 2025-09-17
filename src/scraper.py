@@ -45,7 +45,7 @@ def get_slugs(n_speeches, sorting):
     for i in range(1, last_page_index + 1):
         slugs.extend(page_results[i])
 
-    with open("data/slugs.json", "w") as f:
+    with open("../data/slugs.json", "w") as f:
         json.dump(slugs[:n_speeches], f, indent=4)
     
     print("Fetched slugs")
@@ -99,7 +99,7 @@ def get_speech_data():
         data = json.loads(next_data_tag.string)
         build_id = data["buildId"]
 
-        with open("data/slugs.json") as slug_file:
+        with open("../data/slugs.json") as slug_file:
             slugs = json.load(slug_file)
 
         speeches = []
@@ -110,15 +110,15 @@ def get_speech_data():
                 if speech_data:
                     speeches.append(speech_data)
 
-    with open("data/speeches.json", "w") as f:
+    with open("../data/speeches.json", "w") as f:
         json.dump(speeches, f, indent=4)
 
     print("Fetched speech data")
 
 # downloads and converts a single speech
 def download_audio(url, slug):
-    out_path = os.path.join("data", "raw_audios", slug + ".mp4")
-    wav_path = os.path.join("data", "raw_audios", slug + ".wav")
+    out_path = os.path.join("../data", "audios", slug + ".mp4")
+    wav_path = os.path.join("../data", "audios", slug + ".wav")
 
     yt_opts = {
         "format": "bestaudio",
@@ -142,10 +142,10 @@ def download_audio(url, slug):
 
 # gets the audios of all of the associated speeches in the previously saved speeches.json
 def get_audios():
-    with open("data/speeches.json", "r") as f:
+    with open("../data/speeches.json", "r") as f:
         speech_data = json.load(f)
     
-    os.makedirs("data/raw_audios", exist_ok=True)
+    os.makedirs("../data/audios", exist_ok=True)
 
     with ThreadPoolExecutor(max_workers=10) as executor:
         futures = [
