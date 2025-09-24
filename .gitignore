@@ -1,2 +1,6 @@
-data/
+/data/*
+!/data/csv/
 .vscode/
+/myprosody/dataset/audioFiles/*
+!/myprosody/dataset/audioFiles/
+__pycache__/
