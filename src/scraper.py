@@ -4,6 +4,7 @@ import bs4
 import math
 import os
 import subprocess
+import glob
 from concurrent.futures import ThreadPoolExecutor
 import yt_dlp
 
@@ -102,9 +103,6 @@ class Scraper:
         data["title"] = res_data["title"]
         data["slug"] = res_data["slug"]
 
-        transcript_data = res.get("pageProps", {}).get("transcriptData", {})
-        data["transcriptData"] = transcript_data
-
         return data
 
     # gets the speech data of all of the associated slugs in the previously saved slugs.json
@@ -138,8 +136,8 @@ class Scraper:
 
     # downloads and converts a single speech
     def download_audio(self, url, slug):
-        out_path = os.path.join("../data", "audios", slug + ".mp4")
-        wav_path = os.path.join("../data", "audios", slug + ".wav")
+        out_path = os.path.join("../myprosody", "dataset", "audioFiles", slug + ".mp4")
+        wav_path = os.path.join("../myprosody", "dataset", "audioFiles", slug + ".wav")
 
         yt_opts = {
             "format": "bestaudio",
@@ -180,8 +178,6 @@ class Scraper:
         with open("../data/speeches.json", "r") as f:
             speech_data = json.load(f)
 
-        os.makedirs("../data/audios", exist_ok=True)
-
         with ThreadPoolExecutor(max_workers=10) as executor:
             futures = [
                 executor.submit(
@@ -194,3 +190,9 @@ class Scraper:
                 future.result()
 
         self.current_speech_idx += n_speeches
+
+    # deletes the currently saved audios
+    def clear_audios(self):
+        files = glob.glob("../myprosody/dataset/audioFiles/*")
+        for f in files:
+            os.remove(f)
