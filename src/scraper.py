@@ -87,6 +87,10 @@ class Scraper:
         data["streamUrl"] = json.loads(res_data["playerData"])["resources"]["hls"][
             "stream"
         ]
+        data["type_id"] = res_data["type"]["id"]
+        data["type_name"] = res_data["type"][
+            "name"
+        ]  # probably unnecessary as the id essentially specifies the type
         data["socialTitle"] = res_data["socialTitle"]
         data["recordedOn"] = res_data["recordedOn"]
         data["language"] = res_data["language"]
