@@ -1,7 +1,6 @@
 import requests
 import json
 import bs4
-import sys
 import math
 import os
 import subprocess
@@ -9,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 import yt_dlp
 
 BASE_URL = "https://zenith-prod-alt.ted.com/api/search"
+
 
 class Scraper:
     def __init__(self, n_speeches=10, sorting="popular"):
@@ -39,7 +39,6 @@ class Scraper:
         hits = res["results"][0]["hits"]
         return page, [hit["slug"] for hit in hits], res["results"][0]["nbPages"]
 
-
     # gets the slugs of the n first speeches sorted by the given criteria, and saves them to a json
     def get_slugs(self, n_speeches, sorting):
         first_page = self.fetch_page(0, sorting)
@@ -67,7 +66,6 @@ class Scraper:
 
         print("Fetched slugs")
 
-
     # fetches the speech data (like the audio stream url, title, views, etc.) of a single given speech
     def fetch_speech_data(self, slug, build_id, session):
         url = f"https://www.ted.com/_next/data/{build_id}/talks/{slug}.json"
@@ -85,7 +83,9 @@ class Scraper:
                 return None
 
         data = {}
-        data["streamUrl"] = json.loads(res_data["playerData"])["resources"]["hls"]["stream"]
+        data["streamUrl"] = json.loads(res_data["playerData"])["resources"]["hls"][
+            "stream"
+        ]
         data["socialTitle"] = res_data["socialTitle"]
         data["recordedOn"] = res_data["recordedOn"]
         data["language"] = res_data["language"]
@@ -106,7 +106,6 @@ class Scraper:
         data["transcriptData"] = transcript_data
 
         return data
-
 
     # gets the speech data of all of the associated slugs in the previously saved slugs.json
     def get_speech_data(self):
@@ -136,7 +135,6 @@ class Scraper:
             json.dump(speeches, f, indent=4)
 
         print("Fetched speech data")
-
 
     # downloads and converts a single speech
     def download_audio(self, url, slug):
@@ -170,7 +168,6 @@ class Scraper:
 
         os.remove(out_path)
 
-
     # gets the audios of all of the associated speeches in the previously saved speeches.json
     def get_audios(self, n_speeches):
         if not n_speeches:
@@ -187,8 +184,10 @@ class Scraper:
 
         with ThreadPoolExecutor(max_workers=10) as executor:
             futures = [
-                executor.submit(self.download_audio, speech["streamUrl"], speech["slug"])
-                for speech in speech_data[self.current_speech_idx:end_idx]
+                executor.submit(
+                    self.download_audio, speech["streamUrl"], speech["slug"]
+                )
+                for speech in speech_data[self.current_speech_idx : end_idx]
                 if "streamUrl" in speech and speech["streamUrl"]
             ]
             for future in futures:
