@@ -3,8 +3,7 @@ import os
 import pandas as pd
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-# Change to own path
-c = r"/home/levomaaa/kurssit/intro-to-datascience/project/github_library/myprosody-master/myprosody"
+c = os.path.abspath("./myprosody")
 
 # AudioFiles-folder
 audio_dir = os.path.join(c, "dataset", "audioFiles")
