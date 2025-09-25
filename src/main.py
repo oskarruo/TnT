@@ -23,9 +23,9 @@ def merge_and_join():
             json_data = json.load(f)
         json_df = pd.DataFrame(json_data)
         merged_df = pd.merge(merged_df, json_df, on="slug", how="left")
-        merged_csv_path = os.path.join("../data/csv", "analysis.csv")
+        merged_csv_path = os.path.join("../data/csv", "analyzed_speeches.csv")
         merged_df.to_csv(merged_csv_path, index=False)
-        print("Merged CSVs and wrote to data/csv/analysis.csv")
+        print("Merged CSVs and wrote to ../data/csv/analyzed_speeches.csv")
         for f in csv_files:
             os.remove(f)
     except Exception as e:
