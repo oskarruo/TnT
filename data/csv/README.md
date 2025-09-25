@@ -1,0 +1,1 @@
+The analyzed_speeches.csv file in this directory contains analyzed data of 1000 of the most popular TED speeches.
