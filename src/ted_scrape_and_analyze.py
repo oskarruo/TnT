@@ -38,7 +38,7 @@ def main(n_speeches, n_per_time, sorting):
     merge_and_join()
 
 
-# Usage: python ted_scraper_and_analyze.py [n: int (amount of speeches to download)] [n_per_time: int (amount of speeches to download and analyze at once)] [sorting :string (sort by "popular" or "newest" speeches)]
+# Usage: python ted_scrape_and_analyze.py [n: int (amount of speeches to download)] [n_per_time: int (amount of speeches to download and analyze at once)] [sorting :string (sort by "popular" or "newest" speeches)]
 if __name__ == "__main__":
     n_speeches = 10
     n_per_time = 5
