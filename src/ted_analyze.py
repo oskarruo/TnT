@@ -4,7 +4,7 @@ import pandas as pd
 import io
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from scraper import Scraper
+from ted_scraper import Scraper
 
 
 # parses the output string of mysptotal
