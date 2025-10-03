@@ -19,8 +19,10 @@ class PlaylistScraper:
 
             for video in vids:
                 title = video.get("title")
-                if title not in ("[Deleted video]", "[Private video]"):
-                    url = video.get("url")
+                if title in ("[Deleted video]", "[Private video]"):
+                    continue
+
+                url = video.get("url")
                 if not url and video.get("id"):
                     url = f"https://www.youtube.com/watch?v={video['id']}"
 
