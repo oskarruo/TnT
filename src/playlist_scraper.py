@@ -1,7 +1,7 @@
 import yt_dlp
 import pandas as pd
 import json
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
 import subprocess
 import re
@@ -10,30 +10,47 @@ import glob
 
 class PlaylistScraper:
     def __init__(self, playlist_url):
-        opts = {"quiet": True, "force_generic_extractor": True}
+        import yt_dlp
+
+        opts = {"quiet": True, "force_generic_extractor": True, "extract_flat": True}
 
         data = []
         with yt_dlp.YoutubeDL(opts) as ydl:
             playlist_info = ydl.extract_info(playlist_url, download=False)
             vids = playlist_info.get("entries", [])
 
-            for video in vids:
-                title = video.get("title")
-                if title in ("[Deleted video]", "[Private video]"):
-                    continue
+        def fetch_info(video):
+            title = video.get("title")
+            if title in ("[Deleted video]", "[Private video]"):
+                return None
 
-                url = video.get("url")
-                if not url and video.get("id"):
-                    url = f"https://www.youtube.com/watch?v={video['id']}"
+            url = video.get("url")
+            if not url and video.get("id"):
+                url = f"https://www.youtube.com/watch?v={video['id']}"
 
-                data.append(
-                    {
-                        "title": re.sub(r'[<>:"/\\|?*]', "", title),
-                        "url": url,
-                        "views": video.get("view_count"),
-                    }
-                )
-                print(f"Views: {video.get('view_count')}")
+            if not url:
+                return None
+
+            try:
+                with yt_dlp.YoutubeDL(
+                    {"quiet": True, "force_generic_extractor": True}
+                ) as ydll:
+                    vid_info = ydll.extract_info(url, download=False)
+                return {
+                    "title": re.sub(r'[<>:"/\\|?*]', "", title),
+                    "url": url,
+                    "views": vid_info.get("view_count"),
+                }
+            except Exception as e:
+                print(f"Error fetching {title}: {e}")
+                return None
+
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = {executor.submit(fetch_info, video): video for video in vids}
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    data.append(result)
 
         self.df = pd.DataFrame(data)
         with open("../data/playlist_data.json", "w") as f:
@@ -53,8 +70,11 @@ class PlaylistScraper:
             "nopart": True,
         }
 
-        with yt_dlp.YoutubeDL(yt_opts) as ydl:
-            ydl.download([url])
+        try:
+            with yt_dlp.YoutubeDL(yt_opts) as ydl:
+                ydl.download([url])
+        except Exception as e:
+            print(f"Skipping {title}: {e}")
 
         subprocess.run(
             [
