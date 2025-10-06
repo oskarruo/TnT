@@ -1,7 +1,7 @@
 import yt_dlp
 import pandas as pd
 import json
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 import os
 import subprocess
 import re
@@ -19,38 +19,15 @@ class PlaylistScraper:
             playlist_info = ydl.extract_info(playlist_url, download=False)
             vids = playlist_info.get("entries", [])
 
-        def fetch_info(video):
+        for video in vids:
             title = video.get("title")
-            if title in ("[Deleted video]", "[Private video]"):
-                return None
-
-            url = video.get("url")
-            if not url and video.get("id"):
-                url = f"https://www.youtube.com/watch?v={video['id']}"
-
-            if not url:
-                return None
-
-            try:
-                with yt_dlp.YoutubeDL(
-                    {"quiet": True, "force_generic_extractor": True}
-                ) as ydll:
-                    vid_info = ydll.extract_info(url, download=False)
-                return {
-                    "title": re.sub(r'[<>:"/\\|?*]', "", title),
-                    "url": url,
-                    "views": vid_info.get("view_count"),
-                }
-            except Exception as e:
-                print(f"Error fetching {title}: {e}")
-                return None
-
-        with ThreadPoolExecutor(max_workers=10) as executor:
-            futures = {executor.submit(fetch_info, video): video for video in vids}
-            for future in as_completed(futures):
-                result = future.result()
-                if result:
-                    data.append(result)
+            if title not in ("[Deleted video]", "[Private video]"):
+                data.append(
+                    {
+                        "title": re.sub(r'[<>:"/\\|?*]', "", title),
+                        "url": video.get("url"),
+                    }
+                )
 
         self.df = pd.DataFrame(data)
         with open("../data/playlist_data.json", "w") as f:
@@ -76,22 +53,28 @@ class PlaylistScraper:
         except Exception as e:
             print(f"Skipping {title}: {e}")
 
-        subprocess.run(
-            [
-                "ffmpeg",
-                "-y",
-                "-i",
-                out_path,
-                "-ar",
-                "48000",
-                "-acodec",
-                "pcm_s32le",
-                wav_path,
-            ],
-            check=True,
-        )
+        try:
+            subprocess.run(
+                [
+                    "ffmpeg",
+                    "-y",
+                    "-i",
+                    out_path,
+                    "-ar",
+                    "48000",
+                    "-acodec",
+                    "pcm_s32le",
+                    wav_path,
+                ],
+                check=True,
+            )
+        except Exception as e:
+            print(f"Skipping {title}: ffmpeg conversion failed: {e}")
 
-        os.remove(out_path)
+        try:
+            os.remove(out_path)
+        except OSError:
+            pass
 
     def get_audios(self, n):
         if self.curr_idx >= self.last_idx:
