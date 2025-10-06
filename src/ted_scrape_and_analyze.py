@@ -3,11 +3,12 @@ import glob
 import os
 import pandas as pd
 import json
+import re
 from ted_analyze import analyze
 
 
 # merges the csv files created by the analyze function, and joins the speech data collected into speeches.json, saves everything into analysis.csv
-def merge_and_join():
+def merge_and_join(n_speeches, sorting):
     csv_files = glob.glob(os.path.join("../data/csv", "*.csv"))
     if not csv_files:
         print("No CSVs to merge")
@@ -23,11 +24,17 @@ def merge_and_join():
             json_data = json.load(f)
         json_df = pd.DataFrame(json_data)
         merged_df = pd.merge(merged_df, json_df, on="slug", how="left")
-        merged_csv_path = os.path.join("../data/csv", "analyzed_speeches.csv")
+        merged_csv_path = os.path.join(
+            "../data/csv", f"analyzed_speeches_{n_speeches}_{sorting}.csv"
+        )
         merged_df.to_csv(merged_csv_path, index=False)
-        print("Merged CSVs and wrote to ../data/csv/analyzed_speeches.csv")
+        print(
+            f"Merged CSVs and wrote to ../data/csv/analyzed_speeches__{n_speeches}_{sorting}.csv"
+        )
         for f in csv_files:
-            os.remove(f)
+            filename = os.path.basename(f)
+            if not re.match(r"^analyzed_", filename):
+                os.remove(f)
     except Exception as e:
         print("Error merging:", e)
         return
@@ -35,7 +42,7 @@ def merge_and_join():
 
 def main(n_speeches, n_per_time, sorting):
     analyze(n_speeches, n_per_time, sorting)
-    merge_and_join()
+    merge_and_join(n_speeches, sorting)
 
 
 # Usage: python ted_scrape_and_analyze.py [n: int (amount of speeches to download)] [n_per_time: int (amount of speeches to download and analyze at once)] [sorting :string (sort by "popular" or "newest" speeches)]

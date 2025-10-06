@@ -3,11 +3,13 @@ import glob
 import os
 import pandas as pd
 import json
+import re
 from playlist_analyze import analyze
 
 
 # merges the csv files created by the analyze function, and joins the playlist data collected into playlist_data.json, saves everything into analyzed_playlist.csv
-def merge_and_join():
+def merge_and_join(url):
+    playlist_id = url.split("list=")[-1]
     csv_files = glob.glob(os.path.join("../data/csv", "*.csv"))
     if not csv_files:
         print("No CSVs to merge")
@@ -24,14 +26,16 @@ def merge_and_join():
             json_data = json.load(f)
         json_df = pd.DataFrame(json_data)
         merged_df = pd.merge(merged_df, json_df, on="title", how="left")
-        merged_csv_path = os.path.join("../data/csv", "analyzed_playlist.csv")
+        merged_csv_path = os.path.join(
+            "../data/csv", f"analyzed_playlist_{playlist_id}.csv"
+        )
         merged_df.to_csv(merged_csv_path, index=False)
-        print("Merged CSVs and wrote to ../data/csv/analyzed_playlist.csv")
+        print(
+            f"Merged CSVs and wrote to ../data/csv/analyzed_playlist_{playlist_id}.csv"
+        )
         for f in csv_files:
-            if os.path.basename(f) not in [
-                "analyzed_speeches.csv",
-                "analyzed_playlist.csv",
-            ]:
+            filename = os.path.basename(f)
+            if not re.match(r"^analyzed_", filename):
                 os.remove(f)
     except Exception as e:
         print("Error merging:", e)
@@ -40,7 +44,7 @@ def merge_and_join():
 
 def main(url, n_per_time):
     analyze(url, n_per_time)
-    merge_and_join()
+    merge_and_join(url)
 
 
 # Usage: python playlist_scrape_and_analyze.py [url: str (playlist url to analyze)] [n_per_time: int (amount of vids to download and analyze at once)]
