@@ -16,9 +16,10 @@ def merge_and_join(n_speeches, sorting):
     try:
         dfs = []
         for f in csv_files:
-            df = pd.read_csv(f, index_col=False)
-            df = df.loc[:, ~df.columns.str.contains("^Unnamed")]
-            dfs.append(df)
+            if re.match(r"^analysis_", os.path.basename(f)):
+                df = pd.read_csv(f, index_col=False)
+                df = df.loc[:, ~df.columns.str.contains("^Unnamed")]
+                dfs.append(df)
         merged_df = pd.concat(dfs, ignore_index=True)
         with open("../data/speeches.json", "r", encoding="utf-8") as f:
             json_data = json.load(f)

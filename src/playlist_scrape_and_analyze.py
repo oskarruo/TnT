@@ -17,7 +17,7 @@ def merge_and_join(url):
     try:
         dfs = []
         for f in csv_files:
-            if os.path.basename(f) != "analyzed_speeches.csv":
+            if re.match(r"^analysis_", os.path.basename(f)):
                 df = pd.read_csv(f, index_col=False)
                 df = df.loc[:, ~df.columns.str.contains("^Unnamed")]
                 dfs.append(df)
