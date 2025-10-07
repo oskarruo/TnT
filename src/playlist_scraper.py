@@ -10,8 +10,6 @@ import glob
 
 class PlaylistScraper:
     def __init__(self, playlist_url):
-        import yt_dlp
-
         opts = {"quiet": True, "force_generic_extractor": True, "extract_flat": True}
 
         data = []
@@ -20,14 +18,17 @@ class PlaylistScraper:
             vids = playlist_info.get("entries", [])
 
         for video in vids:
-            title = video.get("title")
-            if title not in ("[Deleted video]", "[Private video]"):
-                data.append(
-                    {
-                        "title": re.sub(r'[<>:"/\\|?*]', "", title),
-                        "url": video.get("url"),
-                    }
-                )
+            if (
+                video.get("duration") < 3601
+            ):  # Ignore vids longer than 1 hour because myprosody freezes with long vids
+                title = video.get("title")
+                if title not in ("[Deleted video]", "[Private video]"):
+                    data.append(
+                        {
+                            "title": re.sub(r'[<>:"/\\|?*]', "", title),
+                            "url": video.get("url"),
+                        }
+                    )
 
         self.df = pd.DataFrame(data)
         with open("../data/playlist_data.json", "w") as f:
