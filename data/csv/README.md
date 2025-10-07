@@ -1,3 +1,5 @@
-The analyzed_speeches.csv file in this directory contains analyzed data of 1000 of the most popular TED speeches.
+The analyzed_speeches_1000_popular.csv file in this directory contains analyzed data of 1000 of the most popular TED speeches.
 
-The analyzed_playilst.csv file in this directory contains analyzed data of [this playlist](https://www.youtube.com/playlist?list=PL_4c34HZDoN6Ysc_Xw1V3V-M9KESB9bJ9).
+The analyzed_playilst_....csv files in this directory contain analyzed data of the following youtube playlists:
+- [The Web Conference 2024 Proceedings - Presentation Videos](https://www.youtube.com/playlist?list=PL_4c34HZDoN6Ysc_Xw1V3V-M9KESB9bJ9) (PL_4c34HZDoN6Ysc_Xw1V3V-M9KESB9bJ9)
+- [Important Presidential Speeches](https://www.youtube.com/playlist?list=PLEL2J-7Brhes50MA_1VmohNe4v33UH6Df) (PLEL2J-7Brhes50MA_1VmohNe4v33UH6Df)
