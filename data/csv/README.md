@@ -5,3 +5,4 @@ The analyzed_playilst_....csv files in this directory contain analyzed data of t
 - [Important Presidential Speeches](https://www.youtube.com/playlist?list=PLEL2J-7Brhes50MA_1VmohNe4v33UH6Df) (PLEL2J-7Brhes50MA_1VmohNe4v33UH6Df)
 - [Monthly Readings (first 200)](https://www.youtube.com/playlist?list=PLFf_-1kTMSNH8k_G-51W4w09bgl98AR1x) (PLFf_-1kTMSNH8k_G-51W4w09bgl98AR1x)
 - [MIXED LECTURES (most of them)](https://www.youtube.com/playlist?list=PLgVhcWtOHMTq7_y2VAsfv3sJHDTb8XP9q) (PLgVhcWtOHMTq7_y2VAsfv3sJHDTb8XP9q)
+- [Lectures and ramblings to fall asleep to](https://www.youtube.com/playlist?list=PLnwMNodmyz8VCS4nXtd4qu7wP0U0b9y3I) (PLnwMNodmyz8VCS4nXtd4qu7wP0U0b9y3I)
