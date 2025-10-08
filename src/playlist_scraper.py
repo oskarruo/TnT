@@ -37,6 +37,8 @@ class PlaylistScraper:
         self.last_idx = self.df.shape[0]
         self.curr_idx = 0
 
+        os.makedirs("../myprosody/dataset/audioFiles", exist_ok=True)
+
     def download_audio(self, title, url):
         out_path = os.path.join("../myprosody", "dataset", "audioFiles", title + ".mp4")
         wav_path = os.path.join("../myprosody", "dataset", "audioFiles", title + ".wav")
