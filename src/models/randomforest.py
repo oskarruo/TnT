@@ -25,9 +25,9 @@ class RandomForest:
         teds = teds.drop_duplicates(subset=["slug"])
         teds = teds[teds["type_id"] == 1]
 
-        columns_to_use = ["rate_of_speech", "articulation_rate", "balance", "f0_std"]
-        x_playlists = playlists[columns_to_use]
-        x_teds = teds[columns_to_use]
+        self.features = ["rate_of_speech", "articulation_rate", "balance", "f0_std"]
+        x_playlists = playlists[self.features]
+        x_teds = teds[self.features]
 
         if len(x_playlists) > len(x_teds):
             x_playlists = x_playlists.sample(n=len(x_teds), random_state=1)
@@ -50,6 +50,7 @@ class RandomForest:
         grid.fit(x_train, y_train)
         self.model = grid.best_estimator_
         self.y_pred = self.model.predict(x_test)
+        self.y_pred_prob = self.model.predict_proba(x_test)[:, 1]
 
     def print_metrics(self):
         print(classification_report(self.y_test, self.y_pred))
