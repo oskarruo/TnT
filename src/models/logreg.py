@@ -9,7 +9,9 @@ from sklearn.metrics import classification_report
 
 class LogReg:
     def __init__(self):
-        csv_files = glob.glob("../data/csv/*.csv")
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        csv_path = os.path.join(base_dir, "..", "..", "data", "csv", "*.csv")
+        csv_files = glob.glob(csv_path)
         playlists = pd.DataFrame()
         teds = pd.DataFrame()
 
@@ -28,9 +30,9 @@ class LogReg:
         x_teds = teds[columns_to_use]
 
         if len(x_playlists) > len(x_teds):
-            x_playlists = x_playlists.sample(n=len(x_teds))
+            x_playlists = x_playlists.sample(n=len(x_teds), random_state=1)
         elif len(x_teds) > len(x_playlists):
-            x_teds = x_teds.sample(n=len(x_playlists))
+            x_teds = x_teds.sample(n=len(x_playlists), random_state=1)
 
         x = pd.concat([x_playlists, x_teds], ignore_index=True)
         y = [0] * len(x_playlists) + [1] * len(x_teds)
