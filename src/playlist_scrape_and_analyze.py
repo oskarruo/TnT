@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import json
 import re
-from playlist_analyze import analyze
+from analyzers.playlist_analyze import analyze
 
 
 # merges the csv files created by the analyze function, and joins the playlist data collected into playlist_data.json, saves everything into analyzed_playlist.csv

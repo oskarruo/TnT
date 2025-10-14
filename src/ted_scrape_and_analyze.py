@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import json
 import re
-from ted_analyze import analyze
+from analyzers.ted_analyze import analyze
 
 
 # merges the csv files created by the analyze function, and joins the speech data collected into speeches.json, saves everything into analysis.csv

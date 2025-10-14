@@ -8,8 +8,6 @@ import glob
 from concurrent.futures import ThreadPoolExecutor
 import yt_dlp
 
-BASE_URL = "https://zenith-prod-alt.ted.com/api/search"
-
 
 class Scraper:
     def __init__(self, n_speeches=10, sorting="popular"):
@@ -36,7 +34,9 @@ class Scraper:
                 },
             }
         ]
-        res = requests.post(BASE_URL, json=payload).json()
+        res = requests.post(
+            "https://zenith-prod-alt.ted.com/api/search", json=payload
+        ).json()
         hits = res["results"][0]["hits"]
         return page, [hit["slug"] for hit in hits], res["results"][0]["nbPages"]
 

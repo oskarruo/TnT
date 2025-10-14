@@ -4,22 +4,32 @@ import pandas as pd
 import io
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from ted_scraper import Scraper
+from scrapers.playlist_scraper import PlaylistScraper
 
 
 # parses the output string of mysptotal
 def parse_mysptotal_output(output, wav):
-    lines = [line for line in output.splitlines() if line.strip()]
+    lines = [line.strip() for line in output.splitlines() if line.strip()]
+
+    if any("Try again" in line for line in lines):
+        print(f"Failed {wav}, skipping.")
+        return None
+
     if len(lines) > 1:
         rows = []
         for line in lines[1:]:
             parts = line.split()
+            if len(parts) < 2:
+                continue
             metric = " ".join(parts[:-1])
             value = parts[-1]
             rows.append((metric, value))
-        df = pd.DataFrame([dict(rows)])
-        df["slug"] = os.path.splitext(os.path.basename(wav))[0]
-        return df
+
+        if rows:
+            df = pd.DataFrame([dict(rows)])
+            df["title"] = os.path.splitext(os.path.basename(wav))[0]
+            return df
+
     return None
 
 
@@ -46,14 +56,15 @@ def analyze_file(wav, c):
 
 
 # analyzes audios
-def analyze(n=10, n_per_time=5, sorting="popular"):
+def analyze(url, n_per_time=5):
     c = os.path.abspath("../myprosody")
     # AudioFiles-folder
     audio_dir = os.path.join(c, "dataset", "audioFiles")
 
     workers = n_per_time if n_per_time <= 20 else 20  # limit workers to 20 for now
 
-    s = Scraper(n, sorting)
+    s = PlaylistScraper(url)
+    n = s.last_idx
 
     # analyze n_per_time audios per time (because of space constraints)
     for start in range(0, n, n_per_time):
@@ -77,7 +88,7 @@ def analyze(n=10, n_per_time=5, sorting="popular"):
             final_df = pd.concat(results, ignore_index=True)
             final_df.to_csv(f"../data/csv/analysis_{start}_{end}.csv", index=False)
             print(f"\nResults of range {start}-{end} put together to a CSV-file")
-            print(f"Progress {end / n * 100}%")
+            print(f"Progress {(end + 1) / n * 100}%")
         else:
             print("No results")
 
