@@ -47,7 +47,10 @@ class LogReg:
         self.y_pred_prob = self.model.predict(x_test_const)
         self.y_pred = (self.y_pred_prob >= 0.5).astype(int)
 
-    def summary(self):
+    def print_summary(self):
+        print(self.model.summary())
+
+    def get_summary_df(self):
         summary_df = pd.concat(
             [
                 self.model.params.rename("coef"),
@@ -68,6 +71,9 @@ class LogReg:
             axis=1,
         )
         return summary_df
+
+    def print_metrics(self):
+        print(classification_report(self.y_test, self.y_pred))
 
     def get_metrics(self):
         return classification_report(self.y_test, self.y_pred, output_dict=True)

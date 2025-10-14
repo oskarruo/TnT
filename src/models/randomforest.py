@@ -49,5 +49,8 @@ class RandomForest:
         self.model = grid.best_estimator_
         self.y_pred = self.model.predict(x_test)
 
+    def print_metrics(self):
+        print(classification_report(self.y_test, self.y_pred))
+
     def get_metrics(self):
         return classification_report(self.y_test, self.y_pred, output_dict=True)
