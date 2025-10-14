@@ -56,3 +56,9 @@ class RandomForest:
 
     def get_metrics(self):
         return classification_report(self.y_test, self.y_pred, output_dict=True)
+
+    def predict_proba(self, x):
+        return self.model.predict_proba(x)
+
+    def predict(self, x):
+        return self.model.predict(x)

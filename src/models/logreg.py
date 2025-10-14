@@ -79,3 +79,11 @@ class LogReg:
 
     def get_metrics(self):
         return classification_report(self.y_test, self.y_pred, output_dict=True)
+
+    def predict(self, x):
+        proba = self.predict(x)
+        return (proba >= 0.5).astype(int)
+
+    def predict_proba(self, x):
+        x_const = sm.add_constant(x, has_constant="add")
+        return self.model.predict(x_const)
