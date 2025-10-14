@@ -38,7 +38,7 @@ class LogReg:
         y = [0] * len(x_playlists) + [1] * len(x_teds)
 
         x_train, x_test, y_train, self.y_test = train_test_split(
-            x, y, test_size=0.2, random_state=1
+            x, y, test_size=0.2, random_state=1, stratify=y
         )
 
         x_train_const = sm.add_constant(x_train)
