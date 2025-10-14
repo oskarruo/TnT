@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report
 
 class RandomForest:
     def __init__(self):
-        csv_files = glob.glob("../../data/csv/*.csv")
+        csv_files = glob.glob("../data/csv/*.csv")
         playlists = pd.DataFrame()
         teds = pd.DataFrame()
 
