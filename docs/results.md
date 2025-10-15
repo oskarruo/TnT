@@ -46,3 +46,29 @@ The confusion matrix, and the precision, recall and f1-score metrics are quite s
 As with the logistic regression model, the ROC curve gives a slightly better rating, with an AUC of **0.68**, suggesting a reasonable ability to distinguish between TED and non-TED talks.
 
 ![randomforest_roc_curve](./images/randomforest_roc_curve.png)
+
+## Support Vector Machine
+
+Again the feature importance stays the same as in previous models. **"f0_std"** is again the highest at 0.66 and **"balance"** at the second place at 0.22. The two other features are staying at around 0.05.
+
+![svm_feature_importance](./images/svm_feature_importance.png)
+
+The overall accuracy is around **74%**. The confusion matrix and the other metrices are quite similar.
+
+![svm_confusion_matrix](./images/svm_confusion_matrix.png)
+
+|              |   precision |   recall |   f1-score |    support |
+|:-------------|------------:|---------:|-----------:|-----------:|
+| 0            |    0.82     | 0.61     |   0.70     | 216        |
+| 1            |    0.69     | 0.87     |   0.77     | 216        |
+| accuracy     |             |          |   0.74     | 432        |
+| macro avg    |    0.76     | 0.74     |   0.74     | 432        |
+| weighted avg |    0.76     | 0.74     |   0.74     | 432        |
+
+The ROC curve gives a slightly better perspective, with an AUC of **0.79**, suggesting a good ability to distinguish between TED and non-TED talks. Almost over 0.8 which would have been generally considered a good model.
+
+![svm_roc_curve](./images/svm_roc_curve.png)
+
+Below we can see how the **"f0_std"** really affects in the classification with SVM.
+
+![svm_classified](./images/svm_classified.png)
