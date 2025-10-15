@@ -47,13 +47,13 @@ As with the logistic regression model, the ROC curve gives a slightly better rat
 
 ![randomforest_roc_curve](./images/randomforest_roc_curve.png)
 
-## Support Vector Machine
+## Support Vector Machine (SVM)
 
 Again the feature importance stays the same as in previous models. **"f0_std"** is again the highest at 0.66 and **"balance"** at the second place at 0.22. The two other features are staying at around 0.05.
 
 ![svm_feature_importance](./images/svm_feature_importance.png)
 
-The overall accuracy is around **74%**. The confusion matrix and the other metrices are quite similar.
+The overall accuracy is around **74%**. The confusion matrix has some differences because it is predicting more TED:s vs NON-TED:s than the previous models. Also the is differences in precision, recall and f1-score between 0 and 1 classifications but is still they are looking alright.
 
 ![svm_confusion_matrix](./images/svm_confusion_matrix.png)
 
@@ -72,3 +72,25 @@ The ROC curve gives a slightly better perspective, with an AUC of **0.79**, sugg
 Below we can see how the **"f0_std"** really affects in the classification with SVM.
 
 ![svm_classified](./images/svm_classified.png)
+
+## K-nearest neighbors (KNN)
+
+Again **"f0_std"** is the most important feature at 0.46 but now **"rate_of_speech"** is at second place at 0.27. **"balance"** is also up there at 0.2 and lastly **"articulation_rate"** at 0.065.
+
+![knn_feature_importance](./images/knn_feature_importance.png)
+
+The overall accuracy is around **70%**. Again the confusion matrix has some differences because it is predicting more TED:s vs NON-TED:s than the first 2 models, but is similar to SVM. Also the is differences in precision, recall and f1-score between 0 and 1 classifications but is still they are looking alright.
+
+![knn_confusion_matrix](./images/knn_confusion_matrix.png)
+
+|              |   precision |   recall |   f1-score |    support |
+|:-------------|------------:|---------:|-----------:|-----------:|
+| 0            |    0.75     | 0.60     |   0.67     | 216        |
+| 1            |    0.67     | 0.80     |   0.73     | 216        |
+| accuracy     |             |          |   0.70     | 432        |
+| macro avg    |    0.71     | 0.70     |   0.70     | 432        |
+| weighted avg |    0.71     | 0.70     |   0.70     | 432        |
+
+The ROC curve is quite similar with the SVM, with an AUC of **0.76**, suggesting a good ability to distinguish between TED and non-TED talks.
+
+![knn_roc_curve](./images/knn_roc_curve.png)
