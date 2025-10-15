@@ -4,9 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.inspection import permutation_importance
-import matplotlib.pyplot as plt
 from pathlib import Path
-import pandas as pd
 
 base_path = Path(__file__).resolve().parent.parent.parent
 ted_df = pd.read_csv(base_path / "data/csv/analyzed_speeches_4000_popular.csv")
@@ -75,7 +73,7 @@ print("\n✅ KNN-model trained successfully!")
 
 y_pred = knn_model.predict(X_test_scaled)
 accuracy = accuracy_score(y_test, y_pred) * 100
-print(f"\n✅ KNN accuracy: {accuracy:.2f}%")
+print(f"\n✅ KNN accuracy: {accuracy:.2f}%.\n")
 
 print("\n--- Classification Report ---")
 print(classification_report(y_test, y_pred, zero_division=0))
@@ -86,5 +84,9 @@ print(confusion_matrix(y_test, y_pred))
 print("\n--- Feature Importances ---")
 perm_importance = permutation_importance(knn_model, X_test_scaled, y_test,
                                          n_repeats=10, random_state=42)
+
+importances = perm_importance.importances_mean
+percent_importances = 100 * importances / importances.sum()
+
 for i, feat in enumerate(features):
-    print(f"{feat}: {perm_importance.importances_mean[i]:.4f} ± {perm_importance.importances_std[i]:.4f}")
+    print(f"{feat}: {percent_importances[i]:.2f}%")
