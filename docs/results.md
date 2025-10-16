@@ -69,6 +69,10 @@ The ROC curve gives a slightly better perspective, with an AUC of **0.79**, sugg
 
 ![svm_roc_curve](./images/svm_roc_curve.png)
 
+Using K-Fold, with five folds the SVM model achieved a mean accuracy of **71%** with a low standard deviation of **1.44%**. This indicates that the model's performance is stable and consistent with different data splits.
+
+![svm_kfold](./images/svm_kfold.png)
+
 Below we can see how the **"f0_std"** really affects in the classification with SVM.
 
 ![svm_classified](./images/svm_classified.png)
@@ -94,3 +98,7 @@ The overall accuracy is around **70%**. Again the confusion matrix has some diff
 The ROC curve is quite similar with the SVM, with an AUC of **0.76**, suggesting a good ability to distinguish between TED and non-TED talks.
 
 ![knn_roc_curve](./images/knn_roc_curve.png)
+
+Using K-Fold, with five folds the KNN model achieved a mean accuracy of **66.7%** with a standard deviation of **2.8%**. This indicates that the model's performance is not as good as in SVM for example, but can still make quite good predictions with different data splits.
+
+![svm_kfold](./images/svm_kfold.png)
