@@ -101,4 +101,4 @@ The ROC curve is quite similar with the SVM, with an AUC of **0.76**, suggesting
 
 Using K-Fold, with five folds the KNN model achieved a mean accuracy of **66.7%** with a standard deviation of **2.8%**. This indicates that the model's performance is not as good as in SVM for example, but can still make quite good predictions with different data splits.
 
-![svm_kfold](./images/svm_kfold.png)
+![knn_kfold](./images/knn_kfold.png)
