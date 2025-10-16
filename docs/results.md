@@ -3,27 +3,19 @@
 ## Logistic Regression
 
 As the logistic regression model is implemented using statsmodels, it allows us to gather more detailed metrics about the model.
-For example, using p-values with the significance level of 0.05 we can see that out of the features, **"balance"** and **"f0_std"** are statistically significant, with a p-value of less than or equal to 0.05. The coefficient of "balance" is also the most significant at less than -5. This implies that TED-speakers have lower balance-values, meaning that their speeches contain more pauses. The coefficient of "f0_std" is not as significant, but it does imply that TED-speakers tend to thave more pitch variability. Furthermore the p-value of "articulation_rate" is just slightly over the significance level, but its coefficient is also not nearly as significant as "balance"s. The negative value of it does imply that TED-speakers talk at a slightly slower rate (when using the speaking duration, which has removed pauses).
+For example, using p-values with the significance level of 0.05 we can see that out of the features, **"balance"** and **"f0_std"** are statistically significant, with a p-value of less than or equal to 0.05. The coefficient of "balance" is also the most significant at almost -5. This implies that TED-speakers have lower balance-values, meaning that their speeches contain more pauses. The coefficient of "f0_std" is not as significant, but it does imply that TED-speakers tend to have more pitch variability.
 
 ![logreg_coef_pval_graph](./images/logreg_coef_pval_graph.png)
 
-The confusion matrix, and the precision, recall and f1-score metrics of the model show that the model does make a significant amount of wrong classifications, with the overall accuracy being around **69.4%**
+The confusion matrix of the model show that the model does make a significant amount of wrong classifications, which tend to be equally distributed between the classes. The overall accuracy **0.6884 ± 0.0209** of the model is decent.
 
 ![logreg_confusion_matrix](./images/logreg_confusion_matrix.png)
 
-|              |   precision |   recall |   f1-score |    support |
-|:-------------|------------:|---------:|-----------:|-----------:|
-| 0            |    0.702899 | 0.673611 |   0.687943 | 144        |
-| 1            |    0.686667 | 0.715278 |   0.70068  | 144        |
-| accuracy     |    0.694444 | 0.694444 |   0.694444 |   0.694444 |
-| macro avg    |    0.694783 | 0.694444 |   0.694312 | 288        |
-| weighted avg |    0.694783 | 0.694444 |   0.694312 | 288        |
-
-The ROC curve gives a slightly better perspective, with an AUC of **0.75**, suggesting a good ability to distinguish between TED and non-TED talks.
+The ROC curve gives a slightly better perspective, with an AUC of **0.75 ± 0.02**, suggesting a good ability to distinguish between TED and non-TED talks.
 
 ![logreg_roc_curve](./images/logreg_roc_curve.png)
 
-Lastly, the Pseudo R-squared value of **0.1355** indicates a moderate explanatory power.
+Lastly, the Pseudo R-squared value of **0.1360 ± 0.0080** indicates a moderate explanatory power.
 
 ## Random Forest
 
@@ -31,19 +23,11 @@ Interestingly, the feature importance values of the random forest model are noti
 
 ![randomforest_feature_importance](./images/randomforest_feature_importance.png)
 
-The confusion matrix, and the precision, recall and f1-score metrics are quite similar to the logreg model, although there is a noticeable dip in overall accuracy, down to around **63.5%**
+The confusion matrix is quite similar to the logreg model, but there is a noticeable drop in overall accuracy, down to around **0.6293 ± 0.0244**.
 
 ![randomforest_confusion_matrix](./images/randomforest_confusion_matrix.png)
 
-|              |   precision |   recall |   f1-score |    support |
-|:-------------|------------:|---------:|-----------:|-----------:|
-| 0            |    0.638298 | 0.625    |   0.631579 | 144        |
-| 1            |    0.632653 | 0.645833 |   0.639175 | 144        |
-| accuracy     |    0.635417 | 0.635417 |   0.635417 |   0.635417 |
-| macro avg    |    0.635475 | 0.635417 |   0.635377 | 288        |
-| weighted avg |    0.635475 | 0.635417 |   0.635377 | 288        |
-
-As with the logistic regression model, the ROC curve gives a slightly better rating, with an AUC of **0.68**, suggesting a reasonable ability to distinguish between TED and non-TED talks.
+As with the logistic regression model, the ROC curve gives a slightly better rating, with an AUC of **0.71 ± 0.01**, suggesting a reasonable ability to distinguish between TED and non-TED talks.
 
 ![randomforest_roc_curve](./images/randomforest_roc_curve.png)
 
@@ -102,3 +86,9 @@ The ROC curve is quite similar with the SVM, with an AUC of **0.76**, suggesting
 Using K-Fold, with five folds the KNN model achieved a mean accuracy of **66.7%** with a standard deviation of **2.8%**. This indicates that the model's performance is not as good as in SVM for example, but can still make quite good predictions with different data splits.
 
 ![knn_kfold](./images/knn_kfold.png)
+
+## Comparison between model accuracies
+
+In a graph showing a 95% confidence interval for the accuracies, the models are in a distinct order and can thus be ranked easily. **SVM is clearly the most accurate**, being the only model to achieve a mean accuracy of over 70%. It also has the lowest spread of the models. Second most accurate is logistic regression, which falls under 70% in mean accuracy and has a slightly bigger spread. Third is KNN. However it has the largest spread, and at its best it's close to the best results of the previous two. The random forest model comes in last. It only has a bit less spread than KNN, but the entire interval is noticeably worse than the rest.
+
+![model_accuracy_comparison](./images/model_accuracy_comparison.png)
