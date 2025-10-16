@@ -5,6 +5,9 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from sklearn.model_selection import train_test_split
 from sklearn.inspection import permutation_importance
 from pathlib import Path
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import StratifiedKFold, cross_val_score
 
 base_path = Path(__file__).resolve().parent.parent.parent
 ted_df = pd.read_csv(base_path / "data/csv/analyzed_speeches_4000_popular.csv")
@@ -90,3 +93,15 @@ percent_importances = 100 * importances / importances.sum()
 
 for i, feat in enumerate(features):
     print(f"{feat}: {percent_importances[i]:.2f}%")
+
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+scores = cross_val_score(knn_model, X_train_scaled, y_train, cv=cv, scoring='accuracy')
+
+print("\n--- 5-Fold Cross Validation ---")
+for i, score in enumerate(scores, start=1):
+    print(f"Fold {i}: {score*100:.2f}%")
+
+mean_score = np.mean(scores) * 100
+std_score = np.std(scores) * 100
+print(f"\nMean accuracy: {mean_score:.2f}%")
+print(f"Standard deviation: {std_score:.2f}%")
