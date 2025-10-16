@@ -4,6 +4,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import sys
 from models.logreg import LogReg
 from models.randomforest import RandomForest
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
@@ -183,8 +184,8 @@ def generate_model_accuracy_comparison_graph(**args):
 
 
 # main function to generate all plots and stats
-def generate_plots_and_stats():
-    logreg = LogReg()
+def generate_plots_and_stats(random_state):
+    logreg = LogReg(random_state=random_state)
     logreg.cross_validate()
     generate_coefficients_with_p_values_graph(logreg)
     generate_confusion_matrix(logreg)
@@ -199,7 +200,7 @@ def generate_plots_and_stats():
 
     print("----------------")
 
-    rf = RandomForest()
+    rf = RandomForest(random_state=random_state)
     rf.cross_validate()
     generate_confusion_matrix(rf)
     generate_roc_curve(rf)
@@ -213,4 +214,7 @@ def generate_plots_and_stats():
 
 
 if __name__ == "__main__":
-    generate_plots_and_stats()
+    random_state = 42
+    if len(sys.argv) > 1:
+        random_state = int(sys.argv[1])
+    generate_plots_and_stats(random_state=random_state)
