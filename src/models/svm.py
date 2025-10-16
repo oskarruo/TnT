@@ -104,23 +104,3 @@ mean_score = np.mean(scores) * 100
 std_score = np.std(scores) * 100
 print(f"\nMean accuracy: {mean_score:.2f}%")
 print(f"Standard deviation: {std_score:.2f}%")
-
-plt.figure(figsize=(8,5))
-plt.bar(range(1, 6), scores * 100, color='steelblue', alpha=0.8)
-plt.axhline(mean_score, color='red', linestyle='--', label=f'Mean {mean_score:.2f}%')
-plt.errorbar(
-    x=np.arange(1,6),
-    y=scores * 100,
-    yerr=std_score,
-    fmt='o',
-    color='black',
-    capsize=5,
-    label=f'Standard deviation ±{std_score:.2f}%'
-)
-plt.title("5-Fold Cross-Validation: Accuracy and Standard Deviation")
-plt.xlabel("Fold")
-plt.ylabel("Accuracy (%)")
-plt.xticks(range(1,6))
-plt.legend()
-plt.tight_layout()
-plt.show()
