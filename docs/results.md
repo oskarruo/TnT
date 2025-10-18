@@ -92,3 +92,7 @@ Using K-Fold, with five folds the KNN model achieved a mean accuracy of **66.7%*
 In a graph showing a 95% confidence interval for the accuracies, the models are in a distinct order and can thus be ranked easily. **SVM is clearly the most accurate**, being the only model to achieve a mean accuracy of over 70%. It also has the lowest spread of the models.
 
 ![model_accuracy_comparison](./images/model_accuracy_comparison.png)
+
+The next graph shows the AUC scores of the models displayed with their 95% confidence intervals, sorted from lowest mean AUC to highest. Again, **the leading model is SVM** with the mean AUC of 0.77. Logistic Regression model is almost as strong as SVM and has a lower spread which indicates to more consistent performance.
+
+![model_auc_comparison](./images/model_auc_comparison.png)
