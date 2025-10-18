@@ -1,13 +1,11 @@
+from pathlib import Path
 import pandas as pd
+import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
 from sklearn.inspection import permutation_importance
-from pathlib import Path
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.model_selection import StratifiedKFold, cross_val_score
 
 base_path = Path(__file__).resolve().parent.parent.parent
 ted_df = pd.read_csv(base_path / "data/csv/analyzed_speeches_4000_popular.csv")
