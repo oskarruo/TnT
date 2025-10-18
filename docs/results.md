@@ -96,3 +96,5 @@ In a graph showing a 95% confidence interval for the accuracies, the models are 
 The next graph shows the AUC scores of the models displayed with their 95% confidence intervals, sorted from lowest mean AUC to highest. Again, **the leading model is SVM** with the mean AUC of 0.77. Logistic Regression model is almost as strong as SVM and has a lower spread which indicates to more consistent performance.
 
 ![model_auc_comparison](./images/model_auc_comparison.png)
+
+In conclusion, with the help of k-fold, we saw that SVM consistently outperforms the orher models in terms of mean accuracy and mean AUC, while also showing relatively low variability across the folds. Logistic Regression is clearly the second best option and performs nearly as good as SVM. KNN and Random Forest have also achieved decent results but are still behind SVM and Logistic Regression in both accuracy and AUC. Overall, SVM would be our preferred choice for classifying TED and non-TED talks, with Logistic Regression as a strong alternative.
