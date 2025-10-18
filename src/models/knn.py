@@ -55,9 +55,6 @@ non_ted_test = non_ted_test.sample(n=min_test, random_state=42)
 train_df = pd.concat([ted_train, non_ted_train], ignore_index=True)
 test_df = pd.concat([ted_test, non_ted_test], ignore_index=True)
 
-print(f"\n🔹 Train data: TED={len(ted_train)}, NON-TED={len(non_ted_train)}")
-print(f"🔹 Test data: TED={len(ted_test)}, NON-TED={len(non_ted_test)}")
-
 features = ['rate_of_speech', 'articulation_rate', 'balance', 'f0_std']
 X_train = train_df[features]
 y_train = train_df['is_ted']
@@ -70,11 +67,10 @@ X_test_scaled = scaler.transform(X_test)
 
 knn_model = KNeighborsClassifier(n_neighbors=5)
 knn_model.fit(X_train_scaled, y_train)
-print("\n✅ KNN-model trained successfully!")
 
 y_pred = knn_model.predict(X_test_scaled)
 accuracy = accuracy_score(y_test, y_pred) * 100
-print(f"\n✅ KNN accuracy: {accuracy:.2f}%.\n")
+print(f"KNN accuracy: {accuracy:.2f}%.\n")
 
 print("\n--- Classification Report ---")
 print(classification_report(y_test, y_pred, zero_division=0))
