@@ -28,9 +28,13 @@ Logistic regression predicts the probability that an audio is a TED talk based o
 
 Random forests are ensembles of decision trees. Each tree makes a prediction based on feature thresholds, and the forest averages these predictions. We use [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) for this.
 
-### SVM
+### Support Vector Machine (SVM)
 
-### KNN
+We are using SVM:s subclass SVC (Support Vector Classifier) to find an optimal decision boundary that separates the two classes. The model focuses on the points closest to the boundary which are called support vectors. We use [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) for this.
+
+### K-Nearest Neighbors (KNN)
+
+KNN classifies the talks based on the classes of its closest neighbors using the features. So basically it chooses if the talk is TED or non-TED by looking at the talks that seem similar to the one being classified. We use [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html) for this.
 
 ## Training
 
