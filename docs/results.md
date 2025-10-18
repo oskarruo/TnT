@@ -7,7 +7,7 @@ For example, using p-values with the significance level of 0.05 we can see that 
 
 ![logreg_coef_pval_graph](./images/logreg_coef_pval_graph.png)
 
-The confusion matrix of the model show that the model does make a significant amount of wrong classifications, which tend to be equally distributed between the classes. The overall accuracy **0.6836 ± 0.0253** of the model is decent.
+The confusion matrix of the model shows that the model does make a significant amount of wrong classifications, which tend to be equally distributed between the classes. The overall accuracy **0.6836 ± 0.0253** of the model is decent.
 
 ![logreg_confusion_matrix](./images/logreg_confusion_matrix.png)
 
@@ -37,7 +37,7 @@ Again the feature importance stays the same as in previous models. **"f0_std"** 
 
 ![svm_feature_importance](./images/svm_feature_importance.png)
 
-The overall accuracy is around **74%**. The confusion matrix has some differences because it is predicting more TED:s vs NON-TED:s than the previous models. Also the is differences in precision, recall and f1-score between 0 and 1 classifications but is still they are looking alright.
+The overall accuracy is around **74%**. The confusion matrix has some differences because it is predicting more TED vs NON-TED talks than the previous models. Also there are differences in precision, recall and f1-score between 0 and 1 classifications but they are still looking alright.
 
 ![svm_confusion_matrix](./images/svm_confusion_matrix.png)
 
@@ -49,7 +49,7 @@ The overall accuracy is around **74%**. The confusion matrix has some difference
 | macro avg    |    0.76     | 0.74     |   0.74     | 432        |
 | weighted avg |    0.76     | 0.74     |   0.74     | 432        |
 
-The ROC curve gives a slightly better perspective, with an AUC of **0.79**, suggesting a good ability to distinguish between TED and non-TED talks. Almost over 0.8 which would have been generally considered a good model.
+The ROC curve gives a slightly better perspective, with an AUC of **0.79**, suggesting a good ability to distinguish between TED and non-TED talks. This is close to 0.8 which is generally considered a good model.
 
 ![svm_roc_curve](./images/svm_roc_curve.png)
 
@@ -67,7 +67,7 @@ Again **"f0_std"** is the most important feature at 0.46 but now **"rate_of_spee
 
 ![knn_feature_importance](./images/knn_feature_importance.png)
 
-The overall accuracy is around **70%**. Again the confusion matrix has some differences because it is predicting more TED:s vs NON-TED:s than the first 2 models, but is similar to SVM. Also the is differences in precision, recall and f1-score between 0 and 1 classifications but is still they are looking alright.
+The overall accuracy is around **70%**. Again the confusion matrix has some differences because it is predicting more TED vs NON-TED talks than the first 2 models, but is similar to SVM. Also there are differences in precision, recall and f1-score between 0 and 1 classifications but they are still looking alright.
 
 ![knn_confusion_matrix](./images/knn_confusion_matrix.png)
 
@@ -93,8 +93,8 @@ In a graph showing a 95% confidence interval for the accuracies, the models are 
 
 ![model_accuracy_comparison](./images/model_accuracy_comparison.png)
 
-The next graph shows the AUC scores of the models displayed with their 95% confidence intervals, sorted from lowest mean AUC to highest. Again, **the leading model is SVM** with the mean AUC of 0.77. Logistic Regression model is almost as strong as SVM and has a lower spread which indicates to more consistent performance.
+The next graph shows the AUC scores of the models displayed with their 95% confidence intervals, sorted from lowest mean AUC to highest. Again, **the leading model is SVM** with the mean AUC of 0.77. Logistic Regression model is almost as strong as SVM and has a lower spread which indicates more consistent performance.
 
 ![model_auc_comparison](./images/model_auc_comparison.png)
 
-In conclusion, with the help of k-fold, we saw that SVM consistently outperforms the orher models in terms of mean accuracy and mean AUC, while also showing relatively low variability across the folds. Logistic Regression is clearly the second best option and performs nearly as good as SVM. KNN and Random Forest have also achieved decent results but are still behind SVM and Logistic Regression in both accuracy and AUC. Overall, SVM would be our preferred choice for classifying TED and non-TED talks, with Logistic Regression as a strong alternative.
+In conclusion, with the help of k-fold, we saw that SVM consistently outperforms the other models in terms of mean accuracy and mean AUC, while also showing relatively low variability across the folds. Logistic Regression is clearly the second best option and performs nearly as well as SVM. KNN and Random Forest have also achieved decent results but are still behind SVM and Logistic Regression in both accuracy and AUC. Overall, SVM would be our preferred choice for classifying TED and non-TED talks, with Logistic Regression as a strong alternative.
