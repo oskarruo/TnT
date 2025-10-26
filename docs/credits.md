@@ -1,3 +1,5 @@
+*[Back to the front page](./index.md/)*
+
 # Credits
 
 ## Project members
