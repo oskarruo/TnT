@@ -20,6 +20,8 @@ To find out, we analyzed over 1500 speeches including TED Talks, university lect
 
 Then, we trained a computer model to guess whether a talk was a TED Talk or not based only on these sound patterns.
 
+*For readers interested in the technical details, our team’s methods are available [here](./methods.md/)*.
+
 ### What We Found
 
 Unfortunately, we did not find a magic "TED Talk Voice" that we can copy. But, our model was able to tell TED Talks apart from other speeches about 75% of the time, which means there is a measurable difference.
@@ -30,7 +32,7 @@ The biggest clues were:
 
 So, I guess you could say that great speakers sound a little more like music. They use rhythm and melody to guide attention and emotion.
 
-*For readers interested in the technical details, our team’s methods are available [here](./methods.md/)*.
+*For readers interested in a more detailed report of the findings, check out [results](./results.md/)*.
 
 ### What Could This Mean?
 
@@ -50,6 +52,8 @@ So, how can you sound more like a TED Talker?
 Small changes in these areas can make a difference in how your speech is percevied.
 
 While we didn't find a 'cheat code' for sounding like a TED Talker, our project shows that there are measurable differences. We hope that the insights you got from this article will help you see (or hear) speech differently.
+
+### [Credits](./credits.md)
 
 ---
 
