@@ -69,10 +69,11 @@ class RandomForest:
         return classification_report(self.y_test, self.y_pred, output_dict=True)
 
     def predict_proba(self, x):
-        return self.model.predict_proba(x)
+        return pd.Series(self.model.predict_proba(x)[:, 1][0])
 
     def predict(self, x):
-        return self.model.predict(x)
+        proba = self.predict_proba(x)
+        return (proba >= 0.5).astype(int)
 
     # this function is for creating a dictionary of cross-validated results
     def cross_validate(self, k=5):

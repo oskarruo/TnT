@@ -88,7 +88,7 @@ class LogReg:
         return classification_report(self.y_test, self.y_pred, output_dict=True)
 
     def predict(self, x):
-        proba = self.predict(x)
+        proba = self.predict_proba(x)
         return (proba >= 0.5).astype(int)
 
     def predict_proba(self, x):
