@@ -6,7 +6,7 @@ title: Credits
 ## Project members
 
 - Aapo Levomäki
-- [Oskar Ruokolainen](https://github.com/oskarruo/TnT/tree/main)
+- Oskar Ruokolainen
 - Suchanya Limpakom
 
 ## Data sources
