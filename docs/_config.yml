@@ -1,2 +1,4 @@
-title: How to Speak Like a TED Talk-er
-theme: jekyll-theme-slate
+title: View on Github
+plugins:
+  - jekyll-remote-theme
+remote_theme: StartBootstrap/startbootstrap-clean-blog-jekyll
